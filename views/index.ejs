@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <!-- Compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </head>
+  <body>
+    <h1>Image to PDF</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+      <label class="waves-effect waves-light btn">
+        File Upload
+        <input type="file" name="avatar" id="" hidden="true" />
+      </label>
+      <button class="btn waves-effect waves-light" type="submit" name="action">
+        Submit
+        <i class="material-icons right">send</i>
+      </button>
+    </form>
+    <br />
+    <a class="btn" href="/donwload" style="display: none">donwload</a>
+    <script>
+      document.querySelector('form').addEventListener('submit', (e) => {
+        document.getElementById('data').innerHTML =
+          'Please Wait for file to upload';
+        e.preventDefault();
+        var input = document.querySelector('input[type="file"]');
+        var data = new FormData();
+        data.append('avatar', input.files[0]);
+        const request = async () => {
+          const reponse = await fetch('/upload', {
+            method: 'POST',
+            body: data,
+          });
+          document.getElementById('data').innerHTML = '';
+          document.getElementById('data').innerHTML = await reponse.text();
+          document.querySelector('a').style.display = 'inline-block';
+        };
+        request();
+      });
+    </script>
+    <div id="data"></div>
+  </body>
+</html>
